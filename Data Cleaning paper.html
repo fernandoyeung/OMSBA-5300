@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Data Cleaning Paper</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Data Cleaning paper_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Data Cleaning paper_files/libs/quarto-html/quarto.js"></script>
+<script src="Data Cleaning paper_files/libs/quarto-html/popper.min.js"></script>
+<script src="Data Cleaning paper_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Data Cleaning paper_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Data Cleaning paper_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Data Cleaning paper_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Data Cleaning paper_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Data Cleaning paper_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Data Cleaning paper_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Data Cleaning Paper</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="data_exploration_assignment" class="level2">
+<h2 class="anchored" data-anchor-id="data_exploration_assignment">Data_Exploration_Assignment</h2>
+<section id="step-1-data-aggregation-and-preprocessing" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-data-aggregation-and-preprocessing"><strong>Step 1: Data Aggregation and Preprocessing</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyverse' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tibble' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyr' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'readr' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'purrr' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'dplyr' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'stringr' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'forcats' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'lubridate' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.4.4     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rio)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'rio' was built under R version 4.2.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregating Google Tends data</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>trends_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>( <span class="at">path =</span> <span class="st">"C:/Users/ferna/OneDrive/Documents/OMSBA 5300/Data explaration/OMSBA-5300/Lab3_Rawdata"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">pattern =</span> <span class="st">"^trends_up_to.*</span><span class="sc">\\</span><span class="st">.csv$"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Bind the files into a single data set</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>google_trends_data <span class="ot">&lt;-</span> <span class="fu">import_list</span>(trends_files, <span class="at">rbind =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in (function (input = "", file = NULL, text = NULL, cmd = NULL, :
+Stopped early on line 1562. Expected 6 fields but found 5. Consider fill=TRUE
+and comment.char=. First discarded non-empty line: &lt;&lt;11,yti career institute -
+york,yti.edu,2,&gt;&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in (function (input = "", file = NULL, text = NULL, cmd = NULL, :
+Stopped early on line 1095. Expected 6 fields but found 5. Consider fill=TRUE
+and comment.char=. First discarded non-empty line: &lt;&lt;9,heidelberg
+university,heidelberg.edu,2,&gt;&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in (function (input = "", file = NULL, text = NULL, cmd = NULL, :
+Stopped early on line 1094. Expected 6 fields but found 5. Consider fill=TRUE
+and comment.char=. First discarded non-empty line: &lt;&lt;8,mount vernon nazarene
+university,mvnu.edu,2,&gt;&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in (function (input = "", file = NULL, text = NULL, cmd = NULL, :
+Stopped early on line 3280. Expected 6 fields but found 5. Consider fill=TRUE
+and comment.char=. First discarded non-empty line: &lt;&lt;41,potomac state college
+of west virginia university,potomac state college of west virginia
+university,1,&gt;&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract first ten characters from monthorweek</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>google_trends_data<span class="sc">$</span>monthorweek <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="fu">ymd</span>(<span class="fu">str_sub</span>(google_trends_data<span class="sc">$</span>monthorweek, <span class="dv">1</span>, <span class="dv">10</span>)))</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregate to months using floor_date</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>google_trends_data<span class="sc">$</span>month <span class="ot">&lt;-</span> <span class="fu">floor_date</span>(google_trends_data<span class="sc">$</span>monthorweek, <span class="at">unit =</span> <span class="st">"month"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Standardize the index variable within each school and keyword</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>google_trends_data <span class="ot">&lt;-</span> google_trends_data <span class="sc">%&gt;%</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(schname, keynum) <span class="sc">%&gt;%</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">std_index =</span> (index <span class="sc">-</span> <span class="fu">mean</span>(index, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> <span class="fu">sd</span>(index, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co"># aggregate to the school-month level</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>school_data <span class="ot">&lt;-</span> google_trends_data <span class="sc">%&gt;%</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(schname, month) <span class="sc">%&gt;%</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_std_index =</span> <span class="fu">mean</span>(std_index, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'schname'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the first few rows of the aggregated data</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(school_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+# Groups:   schname [3]
+  schname                  month      mean_std_index
+  &lt;chr&gt;                    &lt;date&gt;              &lt;dbl&gt;
+1 ""                       NA               NaN     
+2 "40%"                    NA               NaN     
+3 "aaniiih nakoda college" 2013-03-01         2.12  
+4 "aaniiih nakoda college" 2013-04-01        -0.728 
+5 "aaniiih nakoda college" 2013-05-01        -0.694 
+6 "aaniiih nakoda college" 2013-06-01         0.0186</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># adding Score card data</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>scorecard_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"C:/Users/ferna/OneDrive/Documents/OMSBA 5300/Data explaration/OMSBA-5300/Lab3_Rawdata/Most+Recent+Cohorts+(Scorecard+Elements).csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 7804 Columns: 122
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (115): INSTNM, CITY, STABBR, INSTURL, NPCURL, LOCALE, HBCU, PBI, ANNHI, ...
+dbl   (7): UNITID, OPEID, opeid6, HCM2, PREDDEG, CONTROL, CURROPER
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># reading in id_name_link data</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>name_data <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"C:/Users/ferna/OneDrive/Documents/OMSBA 5300/Data explaration/OMSBA-5300/Lab3_Rawdata/id_name_link.csv"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>schools <span class="ot">&lt;-</span> name_data <span class="sc">%&gt;%</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(schname) <span class="sc">%&gt;%</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out schools that show up more than once</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>filtered_name_data <span class="ot">&lt;-</span> schools <span class="sc">%&gt;%</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(schname, unitid, opeid)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>final_data <span class="ot">&lt;-</span> school_data <span class="sc">%&gt;%</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(filtered_name_data, <span class="at">by =</span> <span class="st">"schname"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(scorecard_data, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"unitid"</span> <span class="ot">=</span> <span class="st">"UNITID"</span>, <span class="st">"opeid"</span> <span class="ot">=</span> <span class="st">"OPEID"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(PREDDEG <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">"average_earnings"</span> <span class="ot">=</span> <span class="st">"md_earn_wne_p10-REPORTED-EARNINGS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In this step, I’m aggregating Google Trends data and standardizing the index variable within each school and keyword. Then, I’m aggregating the data to the school-month level and adding Scorecard data.</p>
+</section>
+<section id="step-2-creating-binary-variables" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-creating-binary-variables"><strong>Step 2: Creating Binary Variables</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create a threshold to find the median earnings</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>threshold <span class="ot">&lt;-</span> <span class="fu">median</span>(final_data<span class="sc">$</span>average_earnings)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#median earnings is 42300</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">#create a binary variable for high/low earning</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>final_data<span class="sc">$</span>HighEarning <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(final_data<span class="sc">$</span>average_earnings <span class="sc">&gt;=</span> threshold, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co">#create date value for date</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>release_date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="st">"2015-09-01"</span>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="co">#binary value for date</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>final_data<span class="sc">$</span>PostScorecard <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(final_data<span class="sc">$</span>month <span class="sc">&gt;=</span> release_date, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="co">#SAT median for college</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>sat_average <span class="ot">&lt;-</span> <span class="fu">median</span>(final_data<span class="sc">$</span>SAT_AVG_ALL)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>final_data<span class="sc">$</span>SATMScore <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(final_data<span class="sc">$</span>SAT_AVG_ALL <span class="sc">&gt;=</span> sat_average, <span class="dv">1</span>,  <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In step 2, I’m creating binary values so for my regressions I can see the before and after the release of the article to see if there was any correlation between.</p>
+</section>
+<section id="step-3-regressions-and-graphs" class="level3">
+<h3 class="anchored" data-anchor-id="step-3-regressions-and-graphs"><strong>Step 3: Regressions and Graphs</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fixest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'fixest' was built under R version 4.2.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>google_search <span class="ot">&lt;-</span> <span class="fu">feols</span>(mean_std_index <span class="sc">~</span> HighEarning, <span class="at">data =</span> final_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>NOTE: 521 observations removed because of NA values (LHS: 521).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">etable</span>(google_search)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  google_search
+Dependent Var.:  mean_std_index
+                               
+Constant        0.0044 (0.0035)
+HighEarning     0.0047 (0.0049)
+_______________ _______________
+S.E. type                   IID
+Observations             56,944
+R2                      1.59e-5
+Adj. R2                -1.64e-6
+---
+Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(google_search)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>OLS estimation, Dep. Var.: mean_std_index
+Observations: 56,944 
+Standard-errors: IID 
+            Estimate Std. Error  t value Pr(&gt;|t|) 
+(Intercept) 0.004422   0.003499 1.263664  0.20636 
+HighEarning 0.004709   0.004946 0.952085  0.34106 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+RMSE: 0.590072   Adj. R2: -1.643e-6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co">#after the release</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>google_search_after <span class="ot">&lt;-</span> <span class="fu">feols</span>(mean_std_index <span class="sc">~</span> HighEarning <span class="sc">+</span> PostScorecard, <span class="at">data =</span> final_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>NOTE: 521 observations removed because of NA values (LHS: 521, RHS: 521).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">etable</span>(google_search)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  google_search
+Dependent Var.:  mean_std_index
+                               
+Constant        0.0044 (0.0035)
+HighEarning     0.0047 (0.0049)
+_______________ _______________
+S.E. type                   IID
+Observations             56,944
+R2                      1.59e-5
+Adj. R2                -1.64e-6
+---
+Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co">#regression taking SAT average scores</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>google_SAT <span class="ot">&lt;-</span> <span class="fu">feols</span>(mean_std_index <span class="sc">~</span> HighEarning <span class="sc">+</span> SATMScore, <span class="at">data =</span> final_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>NOTE: 521 observations removed because of NA values (LHS: 521).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">etable</span>(google_SAT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      google_SAT
+Dependent Var.:   mean_std_index
+                                
+Constant         0.0046 (0.0044)
+HighEarning      0.0047 (0.0050)
+SATMScore       -0.0004 (0.0050)
+_______________ ________________
+S.E. type                    IID
+Observations              56,944
+R2                        1.6e-5
+Adj. R2                 -1.91e-5
+---
+Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co">#after release </span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>google_SAT_after <span class="ot">&lt;-</span> <span class="fu">feols</span>(mean_std_index <span class="sc">~</span> HighEarning <span class="sc">+</span> PostScorecard  <span class="sc">+</span> SATMScore, <span class="at">data =</span> final_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>NOTE: 521 observations removed because of NA values (LHS: 521, RHS: 521).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">etable</span>(google_SAT_after)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   google_SAT_after
+Dependent Var.:      mean_std_index
+                                   
+Constant         0.0564*** (0.0045)
+HighEarning         0.0046 (0.0049)
+PostScorecard   -0.2712*** (0.0062)
+SATMScore          -0.0005 (0.0049)
+_______________ ___________________
+S.E. type                       IID
+Observations                 56,944
+R2                          0.03261
+Adj. R2                     0.03256
+---
+Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>For my regressions I have decided that I would do straight forward relationship between the mean_index and high earning to see if there was any relationship between the earnings and Google search this was before the article was released. and did the same thing for after the release, I also wanted to see if the average SAT score would change anything so I made a regression that would show me that.</p>
+</section>
+<section id="step-4-creating-new-data-frame-for-after-2015" class="level3">
+<h3 class="anchored" data-anchor-id="step-4-creating-new-data-frame-for-after-2015"><strong>Step 4: Creating new data frame for after 2015</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the first few rows of the final data</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(final_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 128
+# Groups:   schname [1]
+  schname     month      mean_std_index unitid  opeid opeid6 INSTNM CITY  STABBR
+  &lt;chr&gt;       &lt;date&gt;              &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; 
+1 abilene ch… 2013-03-01         0.395  222178 353700   3537 Abile… Abil… TX    
+2 abilene ch… 2013-04-01         0.736  222178 353700   3537 Abile… Abil… TX    
+3 abilene ch… 2013-05-01        -0.0408 222178 353700   3537 Abile… Abil… TX    
+4 abilene ch… 2013-06-01        -0.165  222178 353700   3537 Abile… Abil… TX    
+5 abilene ch… 2013-07-01         0.190  222178 353700   3537 Abile… Abil… TX    
+6 abilene ch… 2013-08-01         0.999  222178 353700   3537 Abile… Abil… TX    
+# ℹ 119 more variables: INSTURL &lt;chr&gt;, NPCURL &lt;chr&gt;, HCM2 &lt;dbl&gt;, PREDDEG &lt;dbl&gt;,
+#   CONTROL &lt;dbl&gt;, LOCALE &lt;chr&gt;, HBCU &lt;chr&gt;, PBI &lt;chr&gt;, ANNHI &lt;chr&gt;,
+#   TRIBAL &lt;chr&gt;, AANAPII &lt;chr&gt;, HSI &lt;chr&gt;, NANTI &lt;chr&gt;, MENONLY &lt;chr&gt;,
+#   WOMENONLY &lt;chr&gt;, RELAFFIL &lt;chr&gt;, SATVR25 &lt;chr&gt;, SATVR75 &lt;chr&gt;,
+#   SATMT25 &lt;chr&gt;, SATMT75 &lt;chr&gt;, SATWR25 &lt;chr&gt;, SATWR75 &lt;chr&gt;, SATVRMID &lt;chr&gt;,
+#   SATMTMID &lt;chr&gt;, SATWRMID &lt;chr&gt;, ACTCM25 &lt;chr&gt;, ACTCM75 &lt;chr&gt;,
+#   ACTEN25 &lt;chr&gt;, ACTEN75 &lt;chr&gt;, ACTMT25 &lt;chr&gt;, ACTMT75 &lt;chr&gt;, …</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>final_data_release <span class="ot">&lt;-</span> school_data <span class="sc">%&gt;%</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(filtered_name_data, <span class="at">by =</span> <span class="st">"schname"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(scorecard_data, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"unitid"</span> <span class="ot">=</span> <span class="st">"UNITID"</span>, <span class="st">"opeid"</span> <span class="ot">=</span> <span class="st">"OPEID"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(PREDDEG <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(month <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2015-09-01"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">"average_earnings"</span> <span class="ot">=</span> <span class="st">"md_earn_wne_p10-REPORTED-EARNINGS"</span>)</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>threshold_release <span class="ot">&lt;-</span> <span class="fu">median</span>(final_data_release<span class="sc">$</span>average_earnings)</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>final_data_release<span class="sc">$</span>HighEarningRelease <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(final_data_release<span class="sc">$</span>average_earnings <span class="sc">&gt;=</span> threshold, <span class="dv">1</span>, <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Step 4 I had to make a new data frame and binary values to see if there was a difference after the article was posted.</p>
+</section>
+<section id="analysis-of-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-of-the-data"><strong>Analysis of the data</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>google_search <span class="ot">&lt;-</span> <span class="fu">feols</span>(mean_std_index <span class="sc">~</span> HighEarning, <span class="at">data =</span> final_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>NOTE: 521 observations removed because of NA values (LHS: 521).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">etable</span>(google_search)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  google_search
+Dependent Var.:  mean_std_index
+                               
+Constant        0.0044 (0.0035)
+HighEarning     0.0047 (0.0049)
+_______________ _______________
+S.E. type                   IID
+Observations             56,944
+R2                      1.59e-5
+Adj. R2                -1.64e-6
+---
+Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(google_search)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>OLS estimation, Dep. Var.: mean_std_index
+Observations: 56,944 
+Standard-errors: IID 
+            Estimate Std. Error  t value Pr(&gt;|t|) 
+(Intercept) 0.004422   0.003499 1.263664  0.20636 
+HighEarning 0.004709   0.004946 0.952085  0.34106 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+RMSE: 0.590072   Adj. R2: -1.643e-6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co">#after the release</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>google_search_after <span class="ot">&lt;-</span> <span class="fu">feols</span>(mean_std_index <span class="sc">~</span> HighEarning <span class="sc">+</span> PostScorecard, <span class="at">data =</span> final_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>NOTE: 521 observations removed because of NA values (LHS: 521, RHS: 521).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">etable</span>(google_search_after)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                google_search_after
+Dependent Var.:      mean_std_index
+                                   
+Constant         0.0562*** (0.0036)
+HighEarning         0.0046 (0.0049)
+PostScorecard   -0.2712*** (0.0062)
+_______________ ___________________
+S.E. type                       IID
+Observations                 56,944
+R2                          0.03261
+Adj. R2                     0.03257
+---
+Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(google_search_after)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>OLS estimation, Dep. Var.: mean_std_index
+Observations: 56,944 
+Standard-errors: IID 
+               Estimate Std. Error    t value  Pr(&gt;|t|)    
+(Intercept)    0.056163   0.003639  15.433146 &lt; 2.2e-16 ***
+HighEarning    0.004634   0.004864   0.952568   0.34081    
+PostScorecard -0.271177   0.006192 -43.797645 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+RMSE: 0.580377   Adj. R2: 0.032572</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">#regression taking SAT average scores</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>google_SAT <span class="ot">&lt;-</span> <span class="fu">feols</span>(mean_std_index <span class="sc">~</span> HighEarning <span class="sc">+</span> SATMScore, <span class="at">data =</span> final_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>NOTE: 521 observations removed because of NA values (LHS: 521).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">etable</span>(google_SAT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      google_SAT
+Dependent Var.:   mean_std_index
+                                
+Constant         0.0046 (0.0044)
+HighEarning      0.0047 (0.0050)
+SATMScore       -0.0004 (0.0050)
+_______________ ________________
+S.E. type                    IID
+Observations              56,944
+R2                        1.6e-5
+Adj. R2                 -1.91e-5
+---
+Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co">#after release </span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>google_SAT_after <span class="ot">&lt;-</span> <span class="fu">feols</span>(mean_std_index <span class="sc">~</span> HighEarning <span class="sc">+</span> PostScorecard  <span class="sc">+</span> SATMScore, <span class="at">data =</span> final_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>NOTE: 521 observations removed because of NA values (LHS: 521, RHS: 521).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">etable</span>(google_SAT_after)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   google_SAT_after
+Dependent Var.:      mean_std_index
+                                   
+Constant         0.0564*** (0.0045)
+HighEarning         0.0046 (0.0049)
+PostScorecard   -0.2712*** (0.0062)
+SATMScore          -0.0005 (0.0049)
+_______________ ___________________
+S.E. type                       IID
+Observations                 56,944
+R2                          0.03261
+Adj. R2                     0.03256
+---
+Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>In the google_search model, the constant term indicates a mean <em>mean_std_index</em> estimate of 0.0044, with a non-significant coefficient for highEarning at 0.0047. These estimations are based on 56,944 observations, yielding exceedingly low R-squared and adjusted R-squared values of approximately 1.59e-5 and -1.64e-6.</p>
+<p>In the <em>google_search_after</em> model, the constant term suggests a substantial increase in mean_std_index post-Scorecard release, with a statistically significant estimate of 0.0562. While the coefficient for HighEarning remains statistically insignificant at 0.0046, the inclusion of PostScoredcard reveals a notable decrease in <em>mean_std_index</em> post-release, statistically significant at -0.2712. The R-squared value stands at approximately 0.0326.</p>
+</section>
+<section id="graphs-for-the-regressions" class="level3">
+<h3 class="anchored" data-anchor-id="graphs-for-the-regressions"><strong>Graphs for the regressions</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(final_data, <span class="fu">aes</span>(<span class="at">x =</span> average_earnings , <span class="at">y =</span> mean_std_index, <span class="at">color =</span> <span class="fu">factor</span>(HighEarning))) <span class="sc">+</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  </span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Regression of mean_std_index on HighEarning"</span>,</span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"HighEarning"</span>,</span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"mean_std_index"</span>)<span class="sc">+</span></span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>),<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Low Earnings"</span>, <span class="st">"High Earnings"</span>)) <span class="sc">+</span></span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 521 rows containing non-finite values (`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 521 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Data-Cleaning-paper_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co">#graph after the release of the article</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(final_data_release, <span class="fu">aes</span>(<span class="at">x =</span> average_earnings , <span class="at">y =</span> mean_std_index, <span class="at">color =</span> <span class="fu">factor</span>(HighEarningRelease))) <span class="sc">+</span></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  </span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Regression of mean_std_index on HighEarning"</span>,</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"HighEarning"</span>,</span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"mean_std_index"</span>)<span class="sc">+</span></span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>),<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Low Earnings"</span>, <span class="st">"High Earnings"</span>)) <span class="sc">+</span></span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Data-Cleaning-paper_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co">#graph for SAT</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(final_data, <span class="fu">aes</span>(<span class="at">x =</span> average_earnings , <span class="at">y =</span> mean_std_index, <span class="at">color =</span> <span class="fu">factor</span>(SATMScore))) <span class="sc">+</span></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span>  <span class="co"># scatter plot of observed data</span></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># fitted regression line</span></span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Regression of mean_std_index on HighEarning"</span>,</span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"HighEarning"</span>,</span>
+<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"mean_std_index"</span>)<span class="sc">+</span></span>
+<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>),<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Low Score"</span>, <span class="st">"High Score"</span>)) <span class="sc">+</span></span>
+<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 521 rows containing non-finite values (`stat_smooth()`).
+Removed 521 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Data-Cleaning-paper_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>I analyzed the correlation between median income and an index among individuals who graduated ten years ago. Initially, the graph indicated no significant difference in the correlation between high and low income groups. After accounting for the article’s release, the regression analysis yielded a similar result, with the graph depicting an even split between the two groups. Additionally, when examining the correlation between median income and SAT scores, the graph showed no discernible correlation whatsoever.</p>
+</section>
+<section id="research-question" class="level3">
+<h3 class="anchored" data-anchor-id="research-question"><strong>Research Question</strong></h3>
+<p>The College Scorecard was released at the start of September 2015.&nbsp;<strong>Among colleges that predominantly grant bachelor’s degrees</strong>, did the release of the Scorecard shift student interest to high-earnings colleges relative to low-earnings ones (as proxied by Google searches for keywords associated with those colleges)?</p>
+<p>The introduction of the College Scorecard (increased/decreased) search activity on Google Trends for colleges with high-earning graduates by 0.2712 (specific number and units) relative to what it did for colleges with low-earning graduates, with a standard error of 0.0062 . This result comes from the scoredcard coefficient(s) in my regression.</p>
+<p>Based on the data and analysis, the release of the College Scorecard in September 2015 did not lead to a significant shift in student interest toward high-earning colleges relative to low-earning ones, this was assumption can be made from the data google provided.</p>
+<p>In my opinion, I agree that the College Scorecard release in September 2015 didn’t change how much students are interested in high-earning colleges compared to low-earning ones, as shown by Google searches. There are many reasons for this. People care more about factors like school reputation (like Ivy League status), if the college offers the program they want, the campus vibe, location, alumni connections, and advice from parents. All these factors play a big role in choosing the right college, showing that the decision is about more than just potential earnings.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
