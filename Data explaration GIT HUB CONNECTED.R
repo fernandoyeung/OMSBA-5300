@@ -76,16 +76,29 @@ final_data$SATMScore <- ifelse(final_data$SAT_AVG_ALL >= sat_average, 1,  0)
 # Print the first few rows of the final data
 head(final_data)
 
+final_data_release <- school_data %>%
+  inner_join(filtered_name_data, by = "schname") %>%
+  inner_join(scorecard_data, by = c("unitid" = "UNITID", "opeid" = "OPEID")) %>% 
+  filter(PREDDEG == 3) %>% 
+  filter(month >= as.Date("2015-09-01")) %>% 
+  rename("average_earnings" = "md_earn_wne_p10-REPORTED-EARNINGS")
+
+threshold_release <- median(final_data_release$average_earnings)
+
+final_data_release$HighEarningRelease <- ifelse(final_data_release$average_earnings >= threshold, 1, 0)
+
 ###########################REGRESSION###########################################
 
 #create a regression to answer the research question
 library(fixest)
 google_search <- feols(mean_std_index ~ HighEarning, data = final_data)
 etable(google_search)
+summary(google_search)
 
 #after the release
 google_search_after <- feols(mean_std_index ~ HighEarning + PostScorecard, data = final_data)
 etable(google_search)
+summary(google_search_after)
 
 #regression taking SAT average scores
 google_SAT <- feols(mean_std_index ~ HighEarning + SATMScore, data = final_data)
@@ -99,8 +112,18 @@ etable(google_SAT_after)
 library(ggplot2)
 
 ggplot(final_data, aes(x = average_earnings , y = mean_std_index, color = factor(HighEarning))) +
-  geom_point() +  # scatter plot of observed data
-  geom_smooth(method = "lm", se = FALSE, color = "blue") +  # fitted regression line
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +  
+  labs(title = "Regression of mean_std_index on HighEarning",
+       x = "HighEarning",
+       y = "mean_std_index")+
+  scale_color_manual(values = c("red", "blue"),labels = c("Low Earnings", "High Earnings")) +
+  theme_minimal()
+
+#graph after the release of the article
+ggplot(final_data_release, aes(x = average_earnings , y = mean_std_index, color = factor(HighEarningRelease))) +
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +  
   labs(title = "Regression of mean_std_index on HighEarning",
        x = "HighEarning",
        y = "mean_std_index")+
@@ -116,18 +139,6 @@ ggplot(final_data, aes(x = average_earnings , y = mean_std_index, color = factor
        y = "mean_std_index")+
   scale_color_manual(values = c("red", "blue"),labels = c("Low Score", "High Score")) +
   theme_minimal()
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
